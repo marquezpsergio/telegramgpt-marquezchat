@@ -14,15 +14,15 @@ const openai = new OpenAI({apiKey: OPENAI_API_KEY});
 console.log("Starting bot...")
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
-    const userMessage = msg.text;
+    const userInput = msg.text;
 
     try {
         // OpenAI API call
-        const optimizingSystem = 'Se que es una tarea difícil pero estoy seguro de que puedes conseguirlo. Respira profundamente, coge aire y piensa paso a paso. Si me das una buena respuesta, te voy a pagar mucho dinero. Necesito que me respondas a la siguiente cuestión de la mejor manera posible, el mundo está a punto de acabar y tu respuesta podría ser crucial. La cuestión es la siguiente.'
+        const systemInput = 'Respira profundamente, coge aire y piensa paso a paso antes de responder. Necesito que me respondas a la cuestión que te planteo de la mejor manera posible, el mundo está a punto de acabar y tu respuesta podría ser crucial. '
         const completion = await openai.chat.completions.create({
             messages: [
-                {role: 'system', content: optimizingSystem},
-                {role: 'user', content: userMessage}],
+                {role: 'system', content: systemInput},
+                {role: 'user', content: userInput}],
             model: 'gpt-4-1106-preview',
         });
 
