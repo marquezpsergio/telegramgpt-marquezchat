@@ -1,0 +1,16 @@
+{
+  "name": "telegramgpt-personal",
+  "version": "1.0.0",
+  "description": "A Telegram Chat with OpenAI API",
+  "main": "telegram_gpt.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.64.0",
+    "openai": "^4.24.1"
+  }
+}
