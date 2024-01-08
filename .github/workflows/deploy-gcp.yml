@@ -51,14 +51,16 @@ jobs:
           sudo apt-get install -y apt-transport-https ca-certificates gnupg curl sudo
           curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
           echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-          sudo apt-get update -y && sudo apt-get install -y google-cloud-cli
-          sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin
+          sudo apt-get install -y google-cloud-cli google-cloud-sdk-gke-gcloud-auth-plugin
+        continue-on-error: false
 
       - name: Replace image in deployment.yaml
         run: |
-          sed -i "s|'\${github.sha}'|'${{ github.sha }}'|g" k8s/deployment.yaml
+          sed -i "s|'\${GITHUB_SHA}'|'${{ github.sha }}'|g" k8s/deployment.yaml
+          sed -i "s|'\${TELEGRAM_BOT_TOKEN}'|'${{ secrets.TELEGRAM_BOT_TOKEN }}'|g" k8s/deployment.yaml
+          sed -i "s|'\${OPENAI_API_KEY}'|'${{ secrets.OPENAI_API_KEY }}'|g" k8s/deployment.yaml
 
       - name: Deploy to GCP Kubernetes
         run: |
-          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/deployment.yaml -n apps
         continue-on-error: false
