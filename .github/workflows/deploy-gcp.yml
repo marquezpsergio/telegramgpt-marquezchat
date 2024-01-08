@@ -69,9 +69,9 @@ jobs:
 
       - name: Replace image in deployment.yaml
         run: |
-          sed -i "s|'\${GITHUB_SHA}'|'${{ github.sha }}'|g" k8s/deployment.yaml
-          sed -i "s|'\${TELEGRAM_BOT_TOKEN}'|'${{ secrets.TELEGRAM_BOT_TOKEN }}'|g" k8s/deployment.yaml
-          sed -i "s|'\${OPENAI_API_KEY}'|'${{ secrets.OPENAI_API_KEY }}'|g" k8s/deployment.yaml
+          sed -i "s|'\${github_sha}'|'${{ github.sha }}'|g" k8s/deployment.yaml
+          sed -i "s|'\${telegram_bot_token}'|'${{ secrets.TELEGRAM_BOT_TOKEN }}'|g" k8s/deployment.yaml
+          sed -i "s|'\${openai_api_key}'|'${{ secrets.OPENAI_API_KEY }}'|g" k8s/deployment.yaml
 
       - name: Deploy to GCP Kubernetes
         run: |
