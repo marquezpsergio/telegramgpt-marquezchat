@@ -20,9 +20,9 @@ spec:
             - containerPort: 3000
           env:
             - name: TELEGRAM_BOT_TOKEN
-              value: [ [ TELEGRAM_BOT_TOKEN ] ]
+              value: [[TELEGRAM_BOT_TOKEN]]
             - name: OPENAI_API_KEY
-              value: [ [ OPENAI_API_KEY ] ]
+              value: [[OPENAI_API_KEY]]
           resources:
             requests:
               memory: "64Mi"
