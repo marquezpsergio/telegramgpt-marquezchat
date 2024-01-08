@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: telegramgpt-marquezchat
-          image: docker.io/smarquezp/telegramgpt-marquezchat:${{ github.sha }}
+          image: docker.io/smarquezp/telegramgpt-marquezchat:${github.sha}
           ports:
             - containerPort: 3000
           resources:
