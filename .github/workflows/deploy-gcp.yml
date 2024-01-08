@@ -19,25 +19,27 @@ jobs:
           node-version: '20'
 
       - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@main
+        uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
 
       - name: Configure Docker to use the gcloud command-line tool as a credential
         run: |
           gcloud auth configure-docker
 
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
       - name: Build and push Docker image
         run: |
-          docker build -t gcr.io/telegramgpt-marquezchat:${{ github.sha }} .
-          docker push gcr.io/telegramgpt-marquezchat:${{ github.sha }}
+          docker build -t docker.io/smarquezp/telegramgpt-marquezchat:${{ github.sha }} .
+          docker push docker.io/smarquezp/telegramgpt-marquezchat:${{ github.sha }}
         continue-on-error: false
 
       - name: Deploy to GCP Kubernetes
         run: |
           gcloud container clusters get-credentials ${{ env.GCP_CLUSTER_NAME }} --zone ${{ env.GCP_CLUSTER_ZONE }} --project ${{ secrets.GCP_PROJECT_ID }}
           kubectl apply -f k8s/deployment.yaml
-          kubectl set image deployment/telegramgpt-marquezchat-deployment telegramgpt-marquezchat=gcr.io/telegramgpt-marquezchat:${{ github.sha }}
+          kubectl set image deployment/telegramgpt-marquezchat-deployment telegramgpt-marquezchat=docker.io/smarquezp/telegramgpt-marquezchat:${{ github.sha }}
         continue-on-error: false
