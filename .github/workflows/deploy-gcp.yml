@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  dockerize:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,8 +35,12 @@ jobs:
         run: |
           docker build -t docker.io/smarquezp/telegramgpt-marquezchat:${{ github.sha }} .
           docker push docker.io/smarquezp/telegramgpt-marquezchat:${{ github.sha }}
-        continue-on-error: false
 
+  deploy:
+    needs: dockerize
+    runs-on: ubuntu-latest
+    
+    steps:
       - name: Activate service account
         run: |
           echo '${{ secrets.GCP_SA_KEY }}' > gcp-key.json
