@@ -3,8 +3,8 @@ const OpenAI = require('openai');
 const config = require('./config.js');
 
 // Telegram BOT Token
-const TELEGRAM_TOKEN = config.TELEGRAM_TOKEN;
-const bot = new TelegramBot(TELEGRAM_TOKEN, {polling: true});
+const TELEGRAM_BOT_TOKEN = config.TELEGRAM_BOT_TOKEN;
+const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, {polling: true});
 
 // OpenAI API
 const OPENAI_API_KEY = config.OPENAI_API_KEY;
