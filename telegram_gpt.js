@@ -17,19 +17,30 @@ bot.on('message', async (msg) => {
     const userInput = msg.text;
 
     try {
+        // Send status message to user
+        await bot.sendMessage(chatId, "Obteniendo respuesta...");
+        console.log("Mensaje del usuario: " + userInput);
+
         // OpenAI API call
-        const systemInput = 'Respira profundamente, coge aire y piensa paso a paso antes de responder. Necesito que me respondas a la cuestión que te planteo de la mejor manera posible, el mundo está a punto de acabar y tu respuesta podría ser crucial. '
+        const systemInput = 'Respira profundamente, coge aire y piensa paso a paso antes de responder. ' +
+            'Necesito que me respondas a la cuestión que te planteo de la mejor manera posible, ' +
+            'el mundo está a punto de acabar y tu respuesta podría ser crucial. ';
+
         const completion = await openai.chat.completions.create({
             messages: [
                 {role: 'system', content: systemInput},
-                {role: 'user', content: userInput}],
+                {role: 'user', content: userInput}
+            ],
             model: 'gpt-4-1106-preview',
         });
 
         // Sending response to Telegram
-        bot.sendMessage(chatId, completion.choices[0].message.content);
+        const responseContent = completion.choices[0].message.content;
+        await bot.sendMessage(chatId, responseContent);
     } catch (error) {
+        // Handle errors
         console.error('Error with API call:', error.message);
-        bot.sendMessage(chatId, 'Houston, we have a problem.');
+        await bot.sendMessage(chatId, 'Houston, tenemos un problema!');
+        await bot.sendMessage(chatId, 'ERROR: ' + error.message);
     }
 });

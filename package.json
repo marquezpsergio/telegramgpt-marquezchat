@@ -1,13 +1,21 @@
 {
-  "name": "telegramgpt-personal",
+  "name": "telegramgpt-marquezchat",
   "version": "1.0.0",
-  "description": "A Telegram Chat with OpenAI API",
+  "engines": {
+    "node": ">=14"
+  },
+  "description": "A Telegram Chat bot powered by OpenAI's GPT models for natural language processing.",
   "main": "telegram_gpt.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node telegram_gpt.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Márquez Pérez, Sergio",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marquezpsergio/telegramgpt-marquezchat"
+  },
   "license": "ISC",
   "dependencies": {
     "node-telegram-bot-api": "^0.64.0",
