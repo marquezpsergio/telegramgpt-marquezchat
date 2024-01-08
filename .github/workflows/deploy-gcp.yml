@@ -45,10 +45,6 @@ jobs:
           gcloud container clusters get-credentials ${{ vars.GCP_CLUSTER_NAME }} --zone ${{ vars.GCP_CLUSTER_ZONE }} --project ${{ secrets.GCP_PROJECT_ID }}
         continue-on-error: false
 
-      - name: Replace image in deployment.yaml
-        run: |
-          sed -i "s|'\${github.sha}'|'${{ github.sha }}'|g" k8s/deployment.yaml
-
       - name: Install plugin google-cloud-sdk-gke-gcloud-auth-plugin
         run: |
           sudo apt-get update -y
@@ -58,8 +54,11 @@ jobs:
           sudo apt-get update -y && sudo apt-get install -y google-cloud-cli
           sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin
 
+      - name: Replace image in deployment.yaml
+        run: |
+          sed -i "s|'\${github.sha}'|'${{ github.sha }}'|g" k8s/deployment.yaml
+
       - name: Deploy to GCP Kubernetes
         run: |
           kubectl apply -f k8s/deployment.yaml
-          kubectl set image deployment/telegramgpt-marquezchat-deployment telegramgpt-marquezchat=docker.io/smarquezp/telegramgpt-marquezchat:${{ github.sha }}
         continue-on-error: false
