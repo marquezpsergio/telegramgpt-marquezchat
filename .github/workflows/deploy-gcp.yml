@@ -57,8 +57,8 @@ jobs:
 
       - name: Replace variables in deployment.yaml and deploy to GCP Kubernetes
         run: |
-          sed -i "s|'\[[GITHUB_SHA]]'|'${{ github.sha }}'|g" k8s/deployment.yaml
-          sed -i "s|'\[[TELEGRAM_BOT_TOKEN]]'|'${{ secrets.TELEGRAM_BOT_TOKEN }}'|g" k8s/deployment.yaml
-          sed -i "s|'\[[OPENAI_API_KEY]]'|'${{ secrets.OPENAI_API_KEY }}'|g" k8s/deployment.yaml
+          sed -i "s|'\xxGITHUB_SHAxx'|'${{ github.sha }}'|g" k8s/deployment.yaml
+          sed -i "s|'\xxTELEGRAM_BOT_TOKENxx'|'${{ secrets.TELEGRAM_BOT_TOKEN }}'|g" k8s/deployment.yaml
+          sed -i "s|'\xxOPENAI_API_KEYxx'|'${{ secrets.OPENAI_API_KEY }}'|g" k8s/deployment.yaml
           kubectl apply -f k8s/deployment.yaml -n apps
         continue-on-error: false
