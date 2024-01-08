@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegramgpt-marquezchat-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telegramgpt-marquezchat
+  template:
+    metadata:
+      labels:
+        app: telegramgpt-marquezchat
+    spec:
+      containers:
+        - name: telegramgpt-marquezchat
+          image: gcr.io/telegramgpt-marquezchat:${{ github.sha }}
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
