@@ -35,6 +35,7 @@ jobs:
         run: |
           docker build -t docker.io/smarquezp/telegramgpt-marquezchat:${{ github.sha }} .
           docker push docker.io/smarquezp/telegramgpt-marquezchat:${{ github.sha }}
+        continue-on-error: false
 
       - name: Activate service account
         run: |
@@ -59,6 +60,7 @@ jobs:
           sed -i "s|'\${GITHUB_SHA}'|'${{ github.sha }}'|g" k8s/deployment.yaml
           sed -i "s|'\${TELEGRAM_BOT_TOKEN}'|'${{ secrets.TELEGRAM_BOT_TOKEN }}'|g" k8s/deployment.yaml
           sed -i "s|'\${OPENAI_API_KEY}'|'${{ secrets.OPENAI_API_KEY }}'|g" k8s/deployment.yaml
+        continue-on-error: false
 
       - name: Deploy to GCP Kubernetes
         run: |
