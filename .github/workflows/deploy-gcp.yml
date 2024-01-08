@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  dockerize:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,19 +36,6 @@ jobs:
           docker build -t docker.io/smarquezp/telegramgpt-marquezchat:${{ github.sha }} .
           docker push docker.io/smarquezp/telegramgpt-marquezchat:${{ github.sha }}
 
-  deploy:
-    needs: dockerize
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
       - name: Activate service account
         run: |
           echo '${{ secrets.GCP_SA_KEY }}' > gcp-key.json
@@ -69,9 +56,9 @@ jobs:
 
       - name: Replace image in deployment.yaml
         run: |
-          sed -i "s|'\${github_sha}'|'${{ github.sha }}'|g" k8s/deployment.yaml
-          sed -i "s|'\${telegram_bot_token}'|'${{ secrets.TELEGRAM_BOT_TOKEN }}'|g" k8s/deployment.yaml
-          sed -i "s|'\${openai_api_key}'|'${{ secrets.OPENAI_API_KEY }}'|g" k8s/deployment.yaml
+          sed -i "s|'\${GITHUB_SHA}'|'${{ github.sha }}'|g" k8s/deployment.yaml
+          sed -i "s|'\${TELEGRAM_BOT_TOKEN}'|'${{ secrets.TELEGRAM_BOT_TOKEN }}'|g" k8s/deployment.yaml
+          sed -i "s|'\${OPENAI_API_KEY}'|'${{ secrets.OPENAI_API_KEY }}'|g" k8s/deployment.yaml
 
       - name: Deploy to GCP Kubernetes
         run: |

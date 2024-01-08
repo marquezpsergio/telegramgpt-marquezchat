@@ -15,14 +15,14 @@ spec:
     spec:
       containers:
         - name: telegramgpt-marquezchat
-          image: docker.io/smarquezp/telegramgpt-marquezchat:${github_sha}
+          image: docker.io/smarquezp/telegramgpt-marquezchat:${GITHUB_SHA}
           ports:
             - containerPort: 3000
           env:
             - name: TELEGRAM_BOT_TOKEN
-              value: ${telegram_bot_token}
+              value: ${TELEGRAM_BOT_TOKEN}
             - name: OPENAI_API_KEY
-              value: ${openai_api_key}
+              value: ${OPENAI_API_KEY}
           resources:
             requests:
               memory: "64Mi"
