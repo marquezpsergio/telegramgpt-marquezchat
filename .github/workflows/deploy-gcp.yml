@@ -1,0 +1,43 @@
+name: Deploy to GCP Kubernetes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Configure Docker to use the gcloud command-line tool as a credential
+        run: |
+          gcloud auth configure-docker
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t gcr.io/telegramgpt-marquezchat:${{ github.sha }} .
+          docker push gcr.io/telegramgpt-marquezchat:${{ github.sha }}
+        continue-on-error: false
+
+      - name: Deploy to GCP Kubernetes
+        run: |
+          gcloud container clusters get-credentials ${{ env.GCP_CLUSTER_NAME }} --zone ${{ env.GCP_CLUSTER_ZONE }} --project ${{ secrets.GCP_PROJECT_ID }}
+          kubectl apply -f k8s/deployment.yaml
+          kubectl set image deployment/telegramgpt-marquezchat-deployment telegramgpt-marquezchat=gcr.io/telegramgpt-marquezchat:${{ github.sha }}
+        continue-on-error: false
