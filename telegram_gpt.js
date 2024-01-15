@@ -23,8 +23,8 @@ bot.on('message', async (msg) => {
 
         // OpenAI API call
         const systemInput = 'Respira profundamente, coge aire y piensa paso a paso antes de responder. ' +
-            'Necesito que me respondas a la cuestión que te planteo de la mejor manera posible, ' +
-            'el mundo está a punto de acabar y tu respuesta podría ser crucial. ';
+            'Necesito que me respondas a la cuestiÃ³n que te planteo de la mejor manera posible. ' +
+            'Dame una respuesta concisa y breve, al grano, sin entrar en muchos detalles mÃ¡s que los necesarios para responder a mi pregunta.';
 
         const completion = await openai.chat.completions.create({
             messages: [
