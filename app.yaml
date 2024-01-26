@@ -1,0 +1,15 @@
+# [START gae_flex_quickstart_yaml]
+runtime: nodejs
+env: flex
+runtime_config:
+  nodejs_version: 20
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  min_instances: 1
+  max_instances: 10
+  cool_down_period_sec: 120
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
+# [END gae_flex_quickstart_yaml]
